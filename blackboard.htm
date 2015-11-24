@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>blackboard</title>
+<style>
+*{
+	padding:0;
+	margin:0;
+}
+html,body{
+	width:100%;
+	height:100%;
+	overflow:hidden;
+}
+</style>
+</head>
+
+<body>
+	<canvas id="canvas"></canvas>
+</body>
+</html>
+<script type="text/javascript">
+window.onload = function(){
+	
+	function blackboard(){
+		var win_w = window.innerWidth || document.body.clientWidth || document.documentElement.clientWidth;
+		var win_h = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight;
+		 
+		 
+		
+		var canvas = document.getElementById("canvas");
+		//canvas.style.width = win_w;
+		//canvas.style.height = win_h;
+		canvas.setAttribute("width",win_w);
+		canvas.setAttribute("height",win_h);
+		
+		console.log(win_w + ',' + win_h);
+		if(canvas.getContext && canvas){
+			var ctx = canvas.getContext("2d");
+		}
+		ctx.fillStyle = "black";
+		ctx.fillRect(0,0,win_w,win_h);
+		
+		
+		var onoff = false;
+		var oldx = -10;
+		var oldy = -10;
+		
+		var linecolor = "white";
+		
+		var linw = 4;
+		
+		canvas.addEventListener("mousemove",draw,true);
+		canvas.addEventListener("mousedown",down,true);
+		canvas.addEventListener("mouseup",up,true);
+		
+		function down(event){
+			onoff = true;
+			oldx = event.pageX - 10;
+			oldy = event.pageY - 10;
+		}
+		function up(){
+			onoff = false;
+		}
+		
+		function draw(event){
+			if(onoff == true){
+				var newx = event.pageX - 10;
+				var newy = event.pageY - 10;
+				ctx.beginPath();
+				ctx.moveTo(oldx,oldy);
+				ctx.lineTo(newx,newy);
+				ctx.strokeStyle = linecolor;
+				ctx.lineWidth = linw;
+				ctx.lineCap = "round";
+				ctx.stroke();
+				
+				oldx = newx;
+				oldy = newy;
+			}
+		}
+		
+		
+	}
+	blackboard();
+	
+}
+</script>
